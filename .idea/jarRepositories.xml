@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="tacos-release" />
+      <option name="name" value="proj-pc-tacos" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-pc-tacos-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="pcc-snapshot" />
+      <option name="name" value="proj-pc-pcc-test-framework-dev" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-pc-pcc-test-framework-dev" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="beets-release" />
+      <option name="name" value="proj-pc-epg-test-beets" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-pc-epg-test-beets-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="tacos-snapshot" />
+      <option name="name" value="proj-pc-tacos" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-pc-tacos-dev" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="proj-pc-tools-d-jcat-release" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-pc-tools-d-jcat-release/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jcat-arm-snapshot" />
+      <option name="name" value="proj-jcat-dev" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-jcat-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jcat-arm-release" />
+      <option name="name" value="proj-jcat-release" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-jcat-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="beets-snapshot" />
+      <option name="name" value="proj-pc-epg-test-beets" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-pc-epg-test-beets-dev" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="snapshots" />
+      <option name="name" value="proj-pc-tools-d-jcat-dev" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-pc-tools-d-jcat-dev/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="pcc-release" />
+      <option name="name" value="proj-pc-pcc-test-framework-release" />
+      <option name="url" value="https://arm.sero.gic.ericsson.se/artifactory/proj-pc-pcc-test-framework-release" />
+    </remote-repository>
+  </component>
+</project>

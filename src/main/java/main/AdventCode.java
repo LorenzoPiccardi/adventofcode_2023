@@ -1,6 +1,9 @@
 package main;
 
 import tasks.Task1;
+
+import tasks.Task2;
+import tasks.Task3;
 import tasks.TaskInterface;
 import utils.FileReader;
 
@@ -13,11 +16,17 @@ public class AdventCode {
 
         List<TaskInterface> taskList = new ArrayList<>();
 
-        final String input1 = FileReader.readFile(String.format("task_%d.txt", 1));
+        //Task list
         taskList.add(new Task1());
+        taskList.add(new Task2());
+        taskList.add(new Task3());
 
         //Execute all tasks
-        taskList.forEach(task -> task.execute(input1));
+        taskList.forEach(task -> {
+            final String input = FileReader.readFile(String.format("task_%s.txt", task.getDay()));
+            task.execute(input);
+        });
+
     }
 
 }

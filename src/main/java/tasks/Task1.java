@@ -6,79 +6,16 @@ public class Task1 extends TaskBase {
 
     public static final String TASK_NAME = "Trebuchet?!";
 
-    private static class Digit {
-
-        private static final List<String> LETERAL_DIGITS = Arrays.asList("one", "two", "three", "four", "five", "six", "seven", "eight", "nine");
-        private static final List<String> NUMERICAL_DIGITS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
-        private static final Map<String, Integer> CONVERSION_MAP = new HashMap<>();
-        static {
-            CONVERSION_MAP.put("one", 1);
-            CONVERSION_MAP.put("two", 2);
-            CONVERSION_MAP.put("three", 3);
-            CONVERSION_MAP.put("four", 4);
-            CONVERSION_MAP.put("five", 5);
-            CONVERSION_MAP.put("six", 6);
-            CONVERSION_MAP.put("seven", 7);
-            CONVERSION_MAP.put("eight", 8);
-            CONVERSION_MAP.put("nine", 9);
-            CONVERSION_MAP.put("1", 1);
-            CONVERSION_MAP.put("2", 2);
-            CONVERSION_MAP.put("3", 3);
-            CONVERSION_MAP.put("4", 4);
-            CONVERSION_MAP.put("5", 5);
-            CONVERSION_MAP.put("6", 6);
-            CONVERSION_MAP.put("7", 7);
-            CONVERSION_MAP.put("8", 8);
-            CONVERSION_MAP.put("9", 9);
-        }
-
-        private String value;
-        private int index;
-        private int bulk;
-
-        public Digit(final String value, final int index) {
-            this.value = value;
-            this.index = index;
-        }
-
-        public Digit(final int index) {
-            this(null, index);
-        }
-
-        public Integer getNumericalValue() {
-            return CONVERSION_MAP.get(value);
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public int getBulk() {
-            return bulk;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public void setBulk(int bulk) {
-            this.bulk = bulk;
-        }
-    }
-
-
+    private static final List<String> NON_NUMERICAL_DIGITS = Arrays.asList("one", "two", "three", "four", "five", "six", "seven", "eight", "nine");
+    private static final List<String> NUMERICAL_DIGITS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
     public Task1() {
         super(TASK_NAME, 1);
+    }
 
+    @Override
+    public String getDay() {
+        return String.valueOf(this.day);
     }
 
     @Override
@@ -86,134 +23,113 @@ public class Task1 extends TaskBase {
 
         System.out.printf((DAILY_TASK_MESSAGE) + "%n", taskName, day);
 
-        System.out.println("Execute first sub-task");
-        String calibration = executeSubTask1(input);
-        System.out.printf("Calibration result: %s%n", calibration);
+        System.out.println(EXECUTE_FIRST_TASK_MESSAGE);
+        final Integer calibration = executeSubTask1(input);
+        System.out.printf("Calibration result: %d%n", calibration);
 
-        System.out.println("Execute second sub-task");
-        String calibration2 = executeSubTask2(input);
-        System.out.printf("Calibration result: %s%n", calibration2);
+        System.out.println(EXECUTE_SECOND_TASK_MESSAGE);
+        final Integer calibration2 = executeSubTask2(input);
+        System.out.printf("Calibration result: %d%n%n", calibration2);
 
     }
 
+    /**
+     * The method executes the first subtask.
+     * Give the input string it returns the sum of the 2 digits number formed of the first and last digit in the input string.
+     * @param input input string.
+     * @return the sum of the 2 digits number formed of the first and last digit in the input string.
+     *
+     * */
     @Override
-    public String executeSubTask1(final String input) {
-        return getCalibrationValue(input);
+    public Integer executeSubTask1(final String input) {
+        return Arrays.stream(input.split("\\n")).mapToInt(line -> getDigits(line, false)).sum();
     }
 
+    /**
+     * The method executes the first subtask.
+     * Give the input string it returns the sum of the 2 digits number formed of the first and last numeric and not-numeric digit input string.
+     * @param input input string.
+     * @return the sum of the 2 digits number formed of the first and last numeric and not-numeric digit in the input string.
+     *
+     * */
     @Override
-    public String executeSubTask2(final String input) {
-        return getCalibrationValueDigitAndSpelled(input);
+    public Integer executeSubTask2(final String input) {
+        return Arrays.stream(input.split("\\n")).mapToInt(line -> getDigits(line, true)).sum();
     }
 
-    public String replaceSpelledNumbers(final String string) {
+    /**
+     * Return the first and the second number found in the input string in two-digit format. Ex: 12, 32, etc...
+     * @param input input string.
+     * @param alphanumeric search for numeric numbers if false, extend the search to numeric and non-numbers id true.
+     * @return the first and the second number found in the input string in two-digit format.
+     *
+     * */
+    private Integer getDigits(final String input, final boolean alphanumeric) {
 
-        // Search for the first letter occurrence
-        final Digit firstLiteralDigit = new Digit(string.length());
-        for (String value : Task1.Digit.LETERAL_DIGITS) {
-            int digitIndex = string.indexOf(value);
-            if (digitIndex != -1 && digitIndex < firstLiteralDigit.getIndex()) {
-                firstLiteralDigit.setIndex(digitIndex);
-                firstLiteralDigit.setValue(value);
+        final Integer firstDigit = findFirstNumber(input, alphanumeric);
+        final Integer secondDigit = findLastNumber(input, alphanumeric);
+
+        return firstDigit * 10 + secondDigit;
+
+    }
+
+
+    /**
+     * Return the first numeric or non-numeric digit of the input string.
+     * @param input input string.
+     * @param alphanumeric search for numeric numbers if false, extend the search to numeric and non-numbers id true.
+     * @return the first digit found in the input string.
+     *
+     * */
+    private Integer findFirstNumber (final String input, final boolean alphanumeric) {
+
+        final List<String> searchList = new ArrayList<>();
+        searchList.addAll(NUMERICAL_DIGITS);
+        if (alphanumeric) {
+            searchList.addAll(NON_NUMERICAL_DIGITS);
+        }
+
+        int firstIndex = input.length();
+        int digit = 0;
+
+        for (String d : searchList) {
+            int index = input.indexOf(d);
+            if (index < firstIndex && index != -1) {
+                firstIndex = index;
+                digit = (searchList.indexOf(d) % 9) + 1;
             }
         }
 
-        // Search for the first numeric occurrence
-        final Digit firstNumericDigit = new Digit(string.length());
-        for (String value : Task1.Digit.NUMERICAL_DIGITS) {
-            int digitIndex = string.indexOf(value);
-            if (digitIndex != -1 && digitIndex < firstNumericDigit.getIndex()) {
-                firstNumericDigit.setIndex(digitIndex);
-                firstNumericDigit.setValue(value);
+        return digit;
+    }
+
+    /**
+     * Return the last numeric or non-numeric digit of the input string.
+     * @param input input string.
+     * @param alphanumeric search for numeric numbers if false, extend the search to numeric and non-numbers id true.
+     * @return the last digit found in the input string.
+     *
+     * */
+    private Integer findLastNumber (final String input, final boolean alphanumeric) {
+
+        final List<String> searchList = new ArrayList<>();
+        searchList.addAll(NUMERICAL_DIGITS);
+        if (alphanumeric) {
+            searchList.addAll(NON_NUMERICAL_DIGITS);
+        }
+
+        int lastIndex = -1;
+        int digit = 0;
+
+        for (String d : searchList) {
+            int index = input.lastIndexOf(d);
+            if (index > lastIndex && index != -1) {
+                lastIndex = index;
+                digit = (searchList.indexOf(d) % 9) + 1;
             }
         }
 
-        // Search for the first digit
-        final Digit firstDigit;
-        if (firstLiteralDigit.getIndex() < firstNumericDigit.getIndex()) {
-            firstDigit = firstLiteralDigit;
-        } else {
-            firstDigit = firstNumericDigit;
-        }
-
-        // Search for the last letter occurrence
-        final Digit lastLiteralDigit = new Digit(-1);
-        for (String value : Task1.Digit.LETERAL_DIGITS) {
-            int digitIndex = string.lastIndexOf(value);
-            if (digitIndex != -1 && digitIndex > lastLiteralDigit.getIndex()) {
-                lastLiteralDigit.setIndex(digitIndex);
-                lastLiteralDigit.setValue(value);
-            }
-        }
-
-        // Search for the last Numeric occurrence
-        final Digit lastNumericDigit = new Digit(-1);
-        for (String value : Digit.NUMERICAL_DIGITS) {
-            int digitIndex = string.lastIndexOf(value);
-            if (digitIndex != -1 && digitIndex > lastNumericDigit.getIndex()) {
-                lastNumericDigit.setIndex(digitIndex);
-                lastNumericDigit.setValue(value);
-            }
-        }
-
-        // Search for the first digit
-        Digit lastDigit;
-        if (lastLiteralDigit.getIndex() > lastNumericDigit.getIndex()) {
-            lastDigit = lastLiteralDigit;
-        } else {
-            lastDigit = lastNumericDigit;
-        }
-
-        // Check if the second digit doesn't exist
-        if (lastDigit.getValue() == null) {
-            lastDigit = firstDigit;
-        }
-
-        return "" + (firstDigit.getNumericalValue() * 10 + lastDigit.getNumericalValue());
-    }
-
-    public String getCalibrationValueDigitAndSpelled(final String input) {
-        final int calibrationValue = Arrays.stream(input.split("\\n"))
-                .map(this::replaceSpelledNumbers)
-                .mapToInt(Integer::parseInt).sum();
-        return String.valueOf(calibrationValue);
-    }
-
-    public String getCalibrationValue(final String input) {
-        final int calibrationValue = Arrays.stream(input.split("\\n")).map(this::getDigits).mapToInt(Integer::parseInt).sum();
-        return String.valueOf(calibrationValue);
-    }
-
-    private String getDigits(final String input) {
-        return "" + getFirstDigit(input) + getLastDigit(input);
-    }
-
-    private char getFirstDigit(final String input) {
-
-        int i = 0;
-
-        while (i < input.length()) {
-            if (Character.isDigit(input.charAt(i))){
-                return input.charAt(i);
-            }
-            i++;
-        }
-
-        return '\0';
-    }
-
-    private char getLastDigit(final String input) {
-
-        int i = input.length() - 1;
-
-        while (i > -1) {
-            if (Character.isDigit(input.charAt(i))){
-                return input.charAt(i);
-            }
-            i--;
-        }
-
-        return '\0';
+        return digit;
     }
 
 }
